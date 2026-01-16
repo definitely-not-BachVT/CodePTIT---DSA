@@ -2,7 +2,7 @@
 using namespace std;
 
 vector<int> isPrime(1e6 + 3, 1);
-vector<int> snt(70000);
+vector<int> snt;
 void sieve()
 {
     isPrime[0] = isPrime[1] = 0;

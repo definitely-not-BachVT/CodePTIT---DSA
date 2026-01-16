@@ -1,0 +1,1 @@
+{"name":"Local: DSA06018","url":"d:\\C++\\CodePTIT---DSA\\DSA06018.cpp","tests":[{"id":1768503086078,"input":"3\n5\n3 4 5 6 8\n3\n2 1 3\n6\n5 7 9 3 6 2","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\C++\\CodePTIT---DSA\\DSA06018.cpp","group":"local","local":true}
