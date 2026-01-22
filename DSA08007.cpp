@@ -1,28 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string toBin(long long n)
+string toBin(long long a)
 {
-    if (n == 0)
-        return "0";
-
-    string s = "";
-    while (n > 0)
+    int sz = 0;
+    vector<int> res;
+    while (a)
     {
-        int bit = n % 2;
-        s.push_back(char('0' + bit));
-        n /= 2;
+        res.push_back(a % 2);
+        a /= 2;
+        ++sz;
     }
-    reverse(s.begin(), s.end());
-    return s;
-}
+    reverse(res.begin(), res.end());
 
-bool isBin(const string &s)
-{
-    for (char c : s)
-        if (c != '0' && c != '1')
-            return false;
-    return true;
+    string ans = "";
+    for (int i = 0; i < sz; ++i)
+        ans = ans + to_string(res[i]);
+    return ans;
 }
 
 int main()
@@ -39,20 +33,41 @@ int main()
         long long n;
         cin >> n;
 
-        string s = toBin(n);
-        int len = s.size();
+        string s = to_string(n);
+        long long ans = 0;
 
-        long long cnt = 0;
-        cnt += (long long)pow(2, len - 2) - 1;
-        for (int i = 1; i < len; ++i)
+        int size = s.size();
+        long long idx = 1;
+
+        bool ok = false;
+        if (s[0] - '0' > 1)
         {
-            if (s[i] == '1')
-                cnt += (long long)pow(2, len - i - 2);
+            ok = true;
         }
 
-        if (isBin(s))
-            ++cnt;
+        for (int i = 1; i < size; ++i)
+        {
+            if (s[i] - '0' > 1)
+            {
+                idx *= 2;
+                ok = true;
+            }
+            else if (s[i] - '0' == 1)
+            {
+                idx *= 2;
+            }
+            else if (ok)
+            {
+                idx *= 2;
+            }
+        }
+        // cout << "idx la: " << idx << "\n";
 
-        cout << cnt << "\n";
+        ans += idx;
+        // cout << ans << "\n";
+
+        for (int i = 1; i <= size - 1; ++i)
+            ans += pow(2, i - 1);
+        cout << ans << "\n";
     }
 }

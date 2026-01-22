@@ -1,0 +1,1 @@
+{"name":"Local: DSA08002","url":"d:\\C++\\CodePTIT---DSA\\DSA08002.cpp","tests":[{"id":1768880357734,"input":"9\nPUSH 1\nPUSH 2\nPOP\nPRINTFRONT\nPUSH 3\nPRINTFRONT\nPOP\nPOP\nPRINTFRONT","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\C++\\CodePTIT---DSA\\DSA08002.cpp","group":"local","local":true}

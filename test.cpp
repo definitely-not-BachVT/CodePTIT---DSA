@@ -1,52 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> isPrime(1e6 + 3, 1);
-vector<int> snt(70000);
-void sieve()
+bool snt(long long n)
 {
-    isPrime[0] = isPrime[1] = 0;
-    for (int i = 2; i * i <= 1e6 + 3; ++i)
-        if (isPrime[i])
-            for (int j = i * i; j < 1e6 + 3; j += i)
-                isPrime[j] = 0;
+	if (n == 2 || n == 3)
+		return true;
+	if (n < 2 || n % 3 == 0 || n % 2 == 0)
+		return false;
 
-    for (int i = 2; i < 1e6 + 3; ++i)
-        if (isPrime[i])
-            snt.push_back(i);
+	for (int i = 5; i * i <= n; i += 6)
+		if (n % i == 0 || n % (i + 2) == 0)
+			return false;
+
+	return true;
+}
+
+long long tongcs(long long n)
+{
+	long long ans = 0;
+	while (n)
+	{
+		ans += n % 10;
+		n /= 10;
+	}
+	return ans;
+}
+
+long long solve(long long n)
+{
+	if (snt(n))
+		return tongcs(n);
+
+	long long ans = 0;
+	for (int i = 2; i * i <= n; ++i)
+		if (n % i == 0)
+		{
+			ans = ans + solve(i) + solve(n / i);
+			if (i * i == n)
+				ans -= solve(i);
+		}
+
+	return ans;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+	ios_base::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
 
-    int t;
-    cin >> t;
-
-    sieve();
-
-    while (t--)
-    {
-        int n;
-        cin >> n;
-
-        bool found = false;
-        for (int x : snt)
-        {
-            if (x >= n)
-                break;
-
-            if (isPrime[n - x])
-            {
-                found = true;
-                cout << x << " " << n - x << "\n";
-                break;
-            }
-        }
-
-        if (!found)
-            cout << "-1\n";
-    }
+	vector<int> a(10);
+	for (int i = 0; i < 3; ++i)
+		cin >> a[i];
+	a.clear();
+	cout << a.size() << " ";
 }
