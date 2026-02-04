@@ -2,40 +2,28 @@
 using namespace std;
 
 long long n, k;
-vector<string> res;
+vector<vector<long long>> res;
 vector<long long> curr;
 
-void Try(vector<long long> &a, long long sum, long long idx)
+void Try(vector<long long> &a, long long sum, int idx)
 {
     if (sum == k)
     {
-        string tmp = "{";
-        int size = curr.size();
-
-        for (int i = 0; i < size - 1; ++i)
-            tmp = tmp + to_string(a[i]) + " ";
-        tmp = tmp + to_string(a[size - 1]) + "}";
-
-        res.push_back(tmp);
+        res.push_back(curr);
         return;
     }
 
-    if (sum > k)
+    if (sum > k || idx == n)
         return;
 
-    if (idx == n)
-        return;
-
-    for (int i = idx; i < n; ++i)
+    if (sum + a[idx] <= k)
     {
-        // Pick
-        curr.push_back(a[i]);
-        Try(a, sum + a[i], i);
-
-        // Unpick
+        curr.push_back(a[idx]);
+        Try(a, sum + a[idx], idx);
         curr.pop_back();
-        Try(a, sum, i + 1);
     }
+
+    Try(a, sum, idx + 1);
 }
 
 int main()
@@ -53,16 +41,31 @@ int main()
         curr.clear();
 
         cin >> n >> k;
+
         vector<long long> a(n);
         for (int i = 0; i < n; ++i)
             cin >> a[i];
+        sort(a.begin(), a.end());
 
         Try(a, 0, 0);
+        res.erase(unique(res.begin(), res.end()), res.end());
 
-        sort(res.begin(), res.end());
-        cout << res.size() << " ";
-        for (string x : res)
-            cout << x << " ";
-        cout << "\n";
+        int SZ = res.size();
+        if (SZ)
+        {
+            cout << SZ << " ";
+            for (vector<long long> x : res)
+            {
+                int sz = x.size();
+                cout << "{";
+
+                for (int i = 0; i < sz - 1; ++i)
+                    cout << x[i] << " ";
+                cout << x[sz - 1] << "} ";
+            }
+            cout << "\n";
+        }
+        else
+            cout << "-1\n";
     }
 }

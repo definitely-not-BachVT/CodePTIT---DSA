@@ -1,57 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool snt(long long n)
+vector<string> np;
+
+int n = 8;
+void sinh(string x, int idx)
 {
-	if (n == 2 || n == 3)
-		return true;
-	if (n < 2 || n % 3 == 0 || n % 2 == 0)
-		return false;
+  if(idx == 9)
+  {
+    np.push_back(x);
+    return;
+  }
 
-	for (int i = 5; i * i <= n; i += 6)
-		if (n % i == 0 || n % (i + 2) == 0)
-			return false;
-
-	return true;
+  sinh(x + "0", idx + 1);
+  sinh(x + "2", idx + 1);
 }
 
-long long tongcs(long long n)
+bool check(string x)
 {
-	long long ans = 0;
-	while (n)
-	{
-		ans += n % 10;
-		n /= 10;
-	}
-	return ans;
+    for (int i = 0; i < 4; i++)
+        if (x[i] != x[7 - i])
+            return false;
+
+    int day = (x[0] - '0') * 10 + (x[1] - '0');
+    int month = (x[2] - '0') * 10 + (x[3] - '0');
+    int year = (x[4] - '0') * 1000 + (x[5] - '0') * 100
+             + (x[6] - '0') * 10 + (x[7] - '0');
+
+    if (day < 1 || day > 31) return false;
+    if (month < 1 || month > 12) return false;
+    if (year < 2000) return false;
+
+    return true;
 }
 
-long long solve(long long n)
-{
-	if (snt(n))
-		return tongcs(n);
-
-	long long ans = 0;
-	for (int i = 2; i * i <= n; ++i)
-		if (n % i == 0)
-		{
-			ans = ans + solve(i) + solve(n / i);
-			if (i * i == n)
-				ans -= solve(i);
-		}
-
-	return ans;
-}
 
 int main()
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(0);
-	cout.tie(0);
+  ios_base::sync_with_stdio(false);
+  cin.tie(0);
+  cout.tie(0);
 
-	vector<int> a(10);
-	for (int i = 0; i < 3; ++i)
-		cin >> a[i];
-	a.clear();
-	cout << a.size() << " ";
+  sinh("", 0);
+  sort(np.begin(), np.end());
+
+  for(string x : np)
+    if(check(x))
+      cout << x[0] << x[1] << "/" << x[2] << x[3] << "/" << x[4] << x[5] << x[6] << x[7] << "\n";
+
 }
