@@ -1,45 +1,47 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+
 using namespace std;
 
-bool cmp(pair<string, int> a, pair<string, int> b)
+int n;
+
+void f(string a, int b)
 {
-     if (a.second < b.second)
-          return true;
-     else if (a.second > b.second)
-          return false;
+     if (a.length() == b)
+     {
+          if (a.back() == '2')
+               return;
+
+          bool c = false, d = false, e = false, g = false;
+          for (char x : a)
+          {
+               if (x == '2')
+                    c = true;
+               if (x == '3')
+                    d = true;
+               if (x == '5')
+                    e = true;
+               if (x == '7')
+                    g = true;
+          }
+
+          if (c && d && e && g)
+          {
+               cout << a << '\n';
+          }
+          return;
+     }
+
+     f(a + "2", b);
+     f(a + "3", b);
+     f(a + "5", b);
+     f(a + "7", b);
 }
 
 int main()
 {
-     ios_base::sync_with_stdio(false);
-     cin.tie(0);
-     cout.tie(0);
-
-     int n;
      cin >> n;
-
-     vector<string> chuot, child_and_woman, danong, chunhiem;
-     for (int i = 0; i < n; ++i)
-     {
-          string x, y;
-          cin >> x >> y;
-
-          if (y == "rat")
-               chuot.push_back(x);
-          else if (y == "woman" || y == "child")
-               child_and_woman.push_back(x);
-          else if (y == "man")
-               danong.push_back(x);
-          else if (y == "captain")
-               chunhiem.push_back(x);
-     }
-
-     for (auto x : chuot)
-          cout << x << "\n";
-     for (auto x : child_and_woman)
-          cout << x << "\n";
-     for (auto x : danong)
-          cout << x << "\n";
-     for (auto x : chunhiem)
-          cout << x << "\n";
+     for (int i = 4; i <= n; i++)
+          f("", i);
+     return 0;
 }

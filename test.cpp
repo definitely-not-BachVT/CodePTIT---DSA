@@ -7,37 +7,24 @@ int main()
      cin.tie(0);
      cout.tie(0);
 
-     int t;
-     cin >> t;
+     int n;
+     cin >> n;
 
-     while (t--)
+     vector<long long> res;
+     vector<int> a = {2, 3, 5, 7};
+
+     string tmp = "";
+     for (int z : a)
+          tmp = tmp + to_string(z);
+
+     queue<pair<string, int>> q;
+     q.push({tmp, 4});
+
+     while (!q.empty())
      {
-          int ok = 1;
-          int n;
-          cin >> n;
-
-          vector<int> a(n);
-          for (int i = 0; i < n; ++i)
-               cin >> a[i];
-
-          int mid = n / 2;
-          vector<int> pos(n + 1, 0);
-          for (int i = 0; i < n; ++i)
-               pos[a[i]] = i;
-
-          vector<int> b = a;
-          sort(a.begin(), a.end());
-
-          for (int i = 0; i < n; ++i)
-               if (a[i] != b[i] && a[i] != b[n - i - 1])
-               {
-                    ok = 0;
-                    continue;
-               }
-
-          if (ok)
-               cout << "Yes\n";
-          else
-               cout << "No\n";
      }
+
+     sort(res.begin(), res.end());
+     for (long long x : res)
+          cout << x << "\n";
 }
