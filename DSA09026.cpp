@@ -3,18 +3,17 @@ using namespace std;
 
 vector<int> adj[1003];
 bool visited[1003];
-int n, e, start, ed, ok;
+int ok, n, e, start, ed;
 
-void dfs(int start)
+void bfs(int start)
 {
-     stack<pair<int, string>> st;
-     st.push({start, to_string(start)});
-     visited[start] = true;
+     queue<pair<int, string>> q;
+     q.push({start, to_string(start)});
 
-     while (!st.empty())
+     while (!q.empty())
      {
-          auto [x, y] = st.top();
-          st.pop();
+          auto [x, y] = q.front();
+          q.pop();
 
           if (x == ed)
           {
@@ -27,13 +26,11 @@ void dfs(int start)
                if (!visited[z])
                {
                     visited[z] = true;
-                    st.push({x, y});
-                    st.push({z, y + " " + to_string(z)});
-                    break;
+                    q.push({z, y + " " + to_string(z)});
                }
      }
 
-     if (ok == 0)
+     if (!ok)
           cout << "-1\n";
 }
 
@@ -49,8 +46,8 @@ int main()
      while (t--)
      {
           ok = 0;
-
           cin >> n >> e >> start >> ed;
+
           for (int i = 0; i < 1003; ++i)
           {
                visited[i] = false;
@@ -61,9 +58,10 @@ int main()
           {
                int x, y;
                cin >> x >> y;
+
                adj[x].push_back(y);
           }
 
-          dfs(start);
+          bfs(start);
      }
 }

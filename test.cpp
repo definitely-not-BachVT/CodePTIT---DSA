@@ -10,21 +10,25 @@ int main()
      int n;
      cin >> n;
 
-     vector<long long> res;
-     vector<int> a = {2, 3, 5, 7};
-
-     string tmp = "";
-     for (int z : a)
-          tmp = tmp + to_string(z);
-
-     queue<pair<string, int>> q;
-     q.push({tmp, 4});
+     queue<string> q;
+     q.push("0");
+     q.push("1");
 
      while (!q.empty())
      {
-     }
+          string x = q.front();
+          q.pop();
 
-     sort(res.begin(), res.end());
-     for (long long x : res)
-          cout << x << "\n";
+          if (x.size() == n)
+          {
+               cout << x << "\n";
+               continue;
+          }
+
+          if (x.size() > n)
+               break;
+
+          q.push(x + "0");
+          q.push(x + "1");
+     }
 }
