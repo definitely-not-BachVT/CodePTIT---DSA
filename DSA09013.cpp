@@ -3,12 +3,14 @@ using namespace std;
 
 vector<int> adj[1005];
 vector<int> id(1005), low(1005);
-vector<pair<int, int>> ans;
-int cnt = 0;
+int timer = 0;
+
+vector<pair<int, int>> curr;
 
 void dfs(int u, int p)
 {
-     id[u] = low[u] = ++cnt;
+     id[u] = low[u] = ++timer;
+
      for (int v : adj[u])
      {
           if (v == p)
@@ -20,13 +22,11 @@ void dfs(int u, int p)
           {
                dfs(v, u);
                low[u] = min(low[u], low[v]);
+
+               if (low[v] > id[u])
+                    curr.push_back({min(u, v), max(u, v)});
           }
-
-          if (low[v] > id[u])
-               ans.push_back({min(u, v), max(u, v)});
      }
-
-     return;
 }
 
 int main()
@@ -40,13 +40,12 @@ int main()
 
      while (t--)
      {
-          ans.clear();
-          cnt = 0;
+          curr.clear();
 
           for (int i = 0; i < 1005; ++i)
           {
                adj[i].clear();
-               id[i] = low[i] = 0;
+               id[i] = id[i] = 0;
           }
 
           int n, e;
@@ -65,8 +64,8 @@ int main()
                if (!id[i])
                     dfs(i, 0);
 
-          sort(ans.begin(), ans.end());
-          for (auto x : ans)
+          sort(curr.begin(), curr.end());
+          for (auto x : curr)
                cout << x.first << " " << x.second << " ";
           cout << "\n";
      }

@@ -1,31 +1,39 @@
-#include <bits/stdc++.h>
-using namespace std;
+// #include <bits/stdc++.h>
+// using namespace std;
 
-bool ok(pair<int, int> a, pair<int, int> b)
-{
-     if (a.first > b.first && a.second > b.second)
-          return true;
-     else
-          return false;
-}
+// bool cmp(pair<int, int> a, pair<int, int> b)
+// {
+//      if (b.first > a.first && b.second > a.second)
+//           return true;
+//      return false;
+// }
 
-int main()
-{
-     ios_base::sync_with_stdio(false);
-     cin.tie(0);
-     cout.tie(0);
+// int main()
+// {
+//      ios_base::sync_with_stdio(false);
+//      cin.tie(0);
+//      cout.tie(0);
 
-     int n;
-     cin >> n;
+//      int n;
+//      cin >> n;
 
-     vector<pair<int, int>> a(n);
-     for (int i = 0; i < n; ++i)
-          cin >> a[i].first >> a[i].second;
+//      vector<pair<int, int>> a(n);
+//      for (int i = 0; i < n; ++i)
+//           cin >> a[i].first >> a[i].second;
 
-     vector<int> lis(n + 1, 1);
-     for (int i = 0; i < n; ++i)
-          for (int j = 0; j < i; ++j)
-               if (ok(a[i], a[j]))
-                    lis[i] = max(lis[i], lis[i - j] + 1);
-     cout << lis[n - 1] << "\n";
-}
+//      vector<pair<int, int>> tails;
+//      for (int i = 0; i < n; ++i)
+//      {
+//           auto it = lower_bound(tails.begin(), tails.end(), a[i], cmp);
+//           if (it == tails.end())
+//                tails.push_back(a[i]);
+//           else
+//                *it = a[i];
+//      }
+
+//      // for (auto x : tails)
+//      //      cout << x.first << " " << x.second << "\n";
+//      cout << tails.size() << "\n";
+// }
+
+// - 2 - 7 = > -207 - 5 - 6 = > -506
