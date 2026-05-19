@@ -1,85 +1,99 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-string Left(string s)
+struct Point
 {
-     string t = s;
-     t[0] = s[3];
-     t[1] = s[0];
-     t[4] = s[1];
-     t[3] = s[4];
-     return t;
+     double x, y;
+};
+
+bool cmpX(const Point &a, const Point &b)
+{
+     if (a.x != b.x)
+          return a.x < b.x;
+     return a.y < b.y;
 }
 
-string Right(string s)
+bool cmpY(const Point &a, const Point &b)
 {
-     string t = s;
-     t[1] = s[4];
-     t[2] = s[1];
-     t[5] = s[2];
-     t[4] = s[5];
-     return t;
+     return a.y < b.y;
 }
 
-int BFS(string start, string goal)
+double distSq(const Point &p1, const Point &p2)
 {
-     if (start == goal)
-          return 0;
+     return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+}
 
-     queue<pair<string, int>> q;
-     map<string, int> visited;
+Point strip[100005];
+double closestPair(vector<Point> &a, int left, int right)
+{
 
-     q.push({start, 0});
-     visited[start] = 1;
-
-     while (!q.empty())
+     // Bài toán nhỏ nhất
+     if (right - left <= 3)
      {
-          pair<string, int> curr = q.front();
-          q.pop();
+          double min_dist = 1e18; // Vô cùng lớn
+          for (int i = left; i <= right; ++i)
+               for (int j = i + 1; j <= right; ++j)
+                    min_dist = min(min_dist, distSq(a[i], a[j]));
 
-          if (curr.first == goal)
-               return curr.second;
-
-          string left = Left(curr.first);
-          string right = Right(curr.first);
-
-          if (visited[left] == 0)
-          {
-               q.push({left, curr.second + 1});
-               visited[left] = 1;
-          }
-
-          if (visited[right] == 0)
-          {
-               q.push({right, curr.second + 1});
-               visited[right] = 1;
-          }
+          return min_dist;
      }
+
+     // Chia để trị
+     int mid = left + (right - left) / 2;
+     Point midPoint = a[mid];
+
+     double dl = closestPair(a, left, mid);
+     double dr = closestPair(a, mid + 1, right);
+
+     // Kết hợp các bài toán con
+     double d = min(dl, dr);
+
+     int stripCount = 0;
+     for (int i = left; i <= right; i++)
+          if (abs(a[i].x - midPoint.x) * abs(a[i].x - midPoint.x) < d)
+               strip[stripCount++] = a[i];
+     sort(strip, strip + stripCount, cmpY);
+
+     for (int i = 0; i < stripCount; ++i)
+          for (int j = i + 1; j < stripCount; ++j)
+               if ((strip[j].y - strip[i].y) * (strip[j].y - strip[i].y) < d)
+                    d = min(d, distSq(strip[i], strip[j]));
+               else
+                    break;
+
+     return d;
+}
+
+void solve()
+{
+     int n;
+     cin >> n;
+
+     vector<Point> a(n);
+     for (int i = 0; i < n; ++i)
+          cin >> a[i].x >> a[i].y;
+
+     sort(a.begin(), a.end(), cmpX);
+
+     double ans = closestPair(a, 0, n - 1);
+     cout << fixed << setprecision(6) << sqrt(ans) << "\n";
 }
 
 int main()
 {
-     ios::sync_with_stdio(false);
-     cin.tie(nullptr);
+     // Tối ưu I/O cực đại
+     ios_base::sync_with_stdio(false);
+     cin.tie(NULL);
+     cout.tie(NULL);
 
      int t;
-     cin >> t;
-     while (t--)
+     if (cin >> t)
      {
-          string start, goal;
-          for (int i = 0; i < 6; i++)
+          while (t--)
           {
-               char c;
-               cin >> c;
-               start.push_back(c);
+               solve();
           }
-
-          for (int i = 0; i < 6; i++)
-          {
-               char c;
-               cin >> c;
-               goal.push_back(c);
-          }
-          cout << BFS(start, goal) << "\n";
      }
+
+     return 0;
 }

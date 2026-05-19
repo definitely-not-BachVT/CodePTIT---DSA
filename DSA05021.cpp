@@ -15,17 +15,20 @@ int main()
           int n;
           cin >> n;
 
-          vector<double> a(n), b(n);
+          vector<pair<long long, long long>> a(n);
           for (int i = 0; i < n; ++i)
-               cin >> a[i] >> b[i];
+               cin >> a[i].first >> a[i].second;
 
-          vector<int> dp(n, 1);
-
+          vector<long long> dp(n, 1);
+          sort(a.begin(), a.end());
           for (int i = 0; i < n; ++i)
                for (int j = 0; j < i; ++j)
-                    if (a[i] > a[j] && b[i] < b[j])
+                    if (a[j].second < a[i].first)
                          dp[i] = max(dp[i], dp[j] + 1);
 
+          // for (long long x : dp)
+          //      cout << x << " ";
+          // cout << "\n";
           cout << *max_element(dp.begin(), dp.end()) << "\n";
      }
 }
