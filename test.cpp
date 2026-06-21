@@ -1,19 +1,31 @@
-#include <bits/stdc++.h>
-using namespace std;
+// Xây từ một cây có sẵn: Xây bằng hàm đệ quy
+// Xây cây từ "cành": Xây bằng map
 
-void solve()
-{
-}
+// Duyệt cây
+// + Ba cái order: Trung thứ tự, Tiền thứ tự, Hậu thứ tự
+// + 1 cái level
 
-int main()
-{
-     ios_base::sync_with_stdio(false);
-     cin.tie(0);
-     cout.tie(0);
+// Bản chất một số loại cây
+// Cây biểu thức => Stack
 
-     int t = 1;
-     cin >> t;
+// Nhập cây khi cho trước 2 kiểu duyệt
 
-     while (t--)
-          solve();
-}
+// Theo thứ tự từ điển
+
+// (1, 2, 3) (1, 12, 3) (5, 6 ,7)
+// "1 2 3" và "1 12 3"
+// Từ điển mà so sánh từng phần tử trong vector
+
+/*
+     (1, 2, 3)
+     (1, 12, 3)
+     (5, 6 ,7)
+*/
+
+// Từ điển mà so sánh các vector đã được bién đổi thành string
+
+/*
+     (1, 12, 3)
+     (1, 2, 3)
+     (5, 6 ,7)
+*/

@@ -1,96 +1,66 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <map>
+
 using namespace std;
 
 struct Node
 {
      int val;
-     Node *left, *right;
-
-     Node(int x)
-     {
-          val = x;
-          left = right = nullptr;
-     }
+     Node *l = 0, *r = 0;
+     Node(int x) { val = x; }
 };
 
-void insertNode(Node *&root, int x, int y, char z)
+bool check(Node *rt, int d, int &lv)
 {
-     if (root == nullptr)
-          return;
-
-     if (root->val == x)
-     {
-          if (z == 'L')
-               root->left = new Node(y);
-          else
-               root->right = new Node(y);
-
-          return;
-     }
-
-     insertNode(root->left, x, y, z);
-     insertNode(root->right, x, y, z);
-}
-
-int level = -1;
-bool leaf(Node *root, int current_level, int &leaf_level)
-{
-     if (root == nullptr)
+     if (!rt)
           return true;
 
-     if (root->left == nullptr && root->right == nullptr)
-     {
-          if (leaf_level == -1)
-          {
-               leaf_level = current_level;
-               return true;
-          }
+     if (!rt->l && !rt->r)
+          return lv == 0 ? (lv = d, true) : (d == lv);
 
-          return (current_level == leaf_level);
-     }
-
-     return leaf(root->left, current_level + 1, leaf_level) &&
-            leaf(root->right, current_level + 1, leaf_level);
+     return check(rt->l, d + 1, lv) && check(rt->r, d + 1, lv);
 }
+
 void solve()
 {
      int n;
      cin >> n;
 
-     int x, y;
-     char z;
+     map<int, Node *> m;
+     Node *rt = 0;
 
-     cin >> x >> y >> z;
-     Node *root = new Node(x);
-
-     if (z == 'L')
-          root->left = new Node(y);
-     else
-          root->right = new Node(y);
-
-     for (int i = 1; i < n; ++i)
+     for (int i = 0; i < n; i++)
      {
-          cin >> x >> y >> z;
-          insertNode(root, x, y, z);
+          int u, v;
+          char x;
+          cin >> u >> v >> x;
+
+          if (!m[u])
+               m[u] = new Node(u), rt = rt ? rt : m[u];
+
+          m[v] = new Node(v);
+
+          if (x == 'L')
+               m[u]->l = m[v];
+          else
+               m[u]->r = m[v];
      }
 
-     int level = -1;
-     if (leaf(root, 0, level))
-          cout
-              << "1\n";
+     int lv = 0;
+     if (check(rt, 1, lv))
+          cout << 1 << "\n";
      else
-          cout << "0\n";
+          cout << 0 << "\n";
 }
 
 int main()
 {
-     ios_base::sync_with_stdio(false);
+     ios_base::sync_with_stdio(0);
      cin.tie(0);
      cout.tie(0);
 
      int t;
      cin >> t;
-
      while (t--)
           solve();
 }

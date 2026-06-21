@@ -6,7 +6,6 @@ struct Node
      int val;
      Node *left, *right;
 
-     // Hàm khởi tạo
      Node(int x)
      {
           val = x;
@@ -14,33 +13,23 @@ struct Node
      }
 };
 
-void insertNode(Node *&root, int x, int y, char c)
+void insertNode(Node *&root, int x, int y, char z)
 {
-     if (root == nullptr)
-          return;
-
      if (root->val == x)
      {
-          if (c == 'L')
+          if (z == 'L')
                root->left = new Node(y);
           else
                root->right = new Node(y);
-
           return;
      }
 
-     insertNode(root->left, x, y, c);
-     insertNode(root->right, x, y, c);
-}
+     if (root->left)
+          insertNode(root->left, x, y, z);
+     if (root->right)
+          insertNode(root->right, x, y, z);
 
-void in(Node *root)
-{
-     if (root == nullptr)
-          return;
-
-     in(root->left);
-     cout << root->val << " ";
-     in(root->right);
+     return;
 }
 
 void solve()
@@ -49,37 +38,50 @@ void solve()
      cin >> n;
 
      int x, y;
-     char c;
+     char z;
 
-     cin >> x >> y >> c;
-
+     cin >> x >> y >> z;
      Node *root = new Node(x);
-     if (c == 'L')
+     if (z == 'L')
           root->left = new Node(y);
      else
           root->right = new Node(y);
 
      for (int i = 1; i < n; ++i)
      {
-          cin >> x >> y >> c;
-          insertNode(root, x, y, c);
+          cin >> x >> y >> z;
+          insertNode(root, x, y, z);
      }
 
      queue<Node *> q;
      q.push(root);
+
+     bool ok = true;
 
      while (!q.empty())
      {
           Node *fr = q.front();
           q.pop();
 
-          cout << fr->val << " ";
+          if (fr->left == nullptr && fr->right == nullptr)
+               continue;
 
-          if (fr->left)
+          if (fr->left && fr->right)
+          {
                q.push(fr->left);
-          if (fr->right)
                q.push(fr->right);
+          }
+          else
+          {
+               ok = false;
+               break;
+          }
      }
+
+     if (ok)
+          cout << "1\n";
+     else
+          cout << "0\n";
 }
 
 int main()
@@ -88,14 +90,9 @@ int main()
      cin.tie(0);
      cout.tie(0);
 
-     set<int> st;
-     for (int i = 0; i < 5; ++i)
-     {
-          int x;
-          cin >> x;
+     int t = 1;
+     cin >> t;
 
-          st.insert(x);
-     }
-
-     cout << *lower_bound(st.begin(), st.end(), 5) << "\n";
+     while (t--)
+          solve();
 }
